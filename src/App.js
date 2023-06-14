@@ -24,9 +24,9 @@ function App() {
         return posts
     }, [selectedSort, posts])
 
-    const sortedAndSearchedPosts = useMemo(()=>{
-            return sortedPost.filter(post => post.title.includes(searchQuery))
-    },[searchQuery, sortedPost])
+    const sortedAndSearchedPosts = useMemo(() => {
+        return sortedPost.filter(post => post.title.toLowerCase().includes(searchQuery))
+    }, [searchQuery, sortedPost])
 
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
@@ -60,7 +60,7 @@ function App() {
                     ]}
                 />
             </div>
-            {posts.length !== 0
+            {sortedAndSearchedPosts.length
                 ? <PostList
                     remove={removePost}
                     posts={sortedAndSearchedPosts}
