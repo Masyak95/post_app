@@ -13,11 +13,20 @@ function App() {
     ])
 
     const [title, setTitle] = useState("")
+    const [body, setBody] = useState("")
 
-    const bodyInputRef = useRef()
 
     const addNewPost = (e) => {
         e.preventDefault()
+        const newPost = {
+            id: Date.now(),
+            title,
+            body
+        }
+        console.log(newPost)
+        setPosts([...posts, newPost])
+        setTitle("")
+        setBody(" ")
     }
 
     return (
@@ -30,7 +39,8 @@ function App() {
                     placeholder={"title"}
                 />
                 <MyInput
-                    ref={bodyInputRef}
+                    value={body}
+                    onChange={e => setBody(e.target.value)}
                     type={"text"}
                     placeholder={"description"}
                 />
