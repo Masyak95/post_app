@@ -9,11 +9,11 @@ const PostItem = (props) => {
             <div className="content">
                 <strong>{props.number}. {props.post.title}</strong>
                 <div>
-                    Lorem ipsum dolor sit amet
+                    {props.post.body}
                 </div>
             </div>
             <div className="btn">
-                <MyButton>Delete</MyButton>
+                <MyButton onClick={()=> props.remove(props.post)}>Delete</MyButton>
             </div>
         </div>
     );
