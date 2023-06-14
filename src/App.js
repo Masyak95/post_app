@@ -1,8 +1,9 @@
 import './App.css';
-import { useState} from "react";
+import {useState} from "react";
 import PostList from "./components/PostList/PostList";
 import PostForm from "./components/PostForm/PostForm";
 import MySelect from "./components/UI/select/MySelect";
+import MyInput from "./components/UI/input/MyInput";
 
 function App() {
 
@@ -11,9 +12,20 @@ function App() {
         {id: 2, title: "Css", body: "description"},
         {id: 3, title: "React", body: "description"}
     ])
-
     const [selectedSort, setSelectedSort] = useState("")
-    const createPost = ( newPost)=>{
+    const [searchQuery, setSearchQuery] = useState("")
+
+    function getSortedPost(){
+        console.log("тоработала функция сортед пост")
+        if (selectedSort){
+             return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+        }
+        return posts
+    }
+
+    const sortedPost = getSortedPost()
+
+    const createPost = (newPost) => {
         setPosts([...posts, newPost])
     }
 
@@ -23,7 +35,6 @@ function App() {
 
     const sortPost = (sort) => {
         setSelectedSort(sort)
-        setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort])))
     }
 
 
@@ -32,20 +43,25 @@ function App() {
             <PostForm create={createPost}/>
             <hr style={{margin: "15px 0"}}/>
             <div>
+                <MyInput
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    placeholder="Search..."
+                />
                 <MySelect
                     value={selectedSort}
                     onChange={sortPost}
                     defaultValue={"sorting by "}
                     options={[
-                        {value:"title", name: "title"},
-                        {value:"title", name: "description"}
+                        {value: "title", name: "title"},
+                        {value: "title", name: "description"}
                     ]}
                 />
             </div>
             {posts.length !== 0
-                ?  <PostList
+                ? <PostList
                     remove={removePost}
-                    posts={posts}
+                    posts={sortedPost}
                     title={"post list number 1"}
                 />
                 : <h1 style={{textAlign: "center"}}>posts not found!</h1>
