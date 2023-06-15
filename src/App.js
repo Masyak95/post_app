@@ -1,11 +1,13 @@
 import './App.css';
-import {useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import PostList from "./components/PostList/PostList";
 import PostForm from "./components/PostForm/PostForm";
 import PostFilter from "./components/PostFilter/PostFilter";
 import MyModal from "./components/UI/modal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import {usePosts} from "./hooks/usePosts";
+import PostService from "./API/PostService";
+import Loader from "./components/UI/loader/Loader";
 
 function App() {
 
@@ -13,10 +15,24 @@ function App() {
     const [filter, setFilter] = useState({sort: "", query: ""})
     const [modal, setModal] = useState(false)
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
+    const [isPostsLoading, setIsPostsLoading] = useState(false)
+
+    useEffect(() => {
+        fetchPosts()
+    }, [])
 
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
         setModal(false)
+    }
+
+    async function fetchPosts() {
+        setIsPostsLoading(true)
+        setTimeout(async () => {
+            const posts = await PostService.getAll()
+            setPosts(posts)
+            setIsPostsLoading(false)
+        }, 2000)
     }
 
     const removePost = (post) => { //получаем пост из дочернего документа
@@ -37,12 +53,16 @@ function App() {
                 filter={filter}
                 setFilter={setFilter}
             />
-            <PostList
-                remove={removePost}
-                posts={sortedAndSearchedPosts}
-                title={"post list number 1"}
-            />
-
+            {isPostsLoading
+                ? <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
+                    <Loader/>
+                </div>
+                : <PostList
+                    remove={removePost}
+                    posts={sortedAndSearchedPosts}
+                    title={"post list number 1"}
+                />
+            }
         </div>
     );
 }
