@@ -27,3 +27,20 @@
     opacity: 0;
     transition: opacity 500ms ease-in;
 }
+
+.page{
+    padding: 10px;
+    border: 1px solid teal;
+    cursor: pointer;
+}
+
+.page__wrapper{
+    margin-top: 30px;
+    display: flex;
+}
+
+.page__current{
+    border: 2px solid darkorange;
+    font-weight: bold;
+}
+
