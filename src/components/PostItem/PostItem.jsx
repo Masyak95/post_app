@@ -4,6 +4,9 @@ import MyButton from "../UI/button/MyButton";
 
 
 const PostItem = (props) => {
+
+
+
     return (
         <div className={s.post}>
             <div className="content">
@@ -12,7 +15,8 @@ const PostItem = (props) => {
                     {props.post.body}
                 </div>
             </div>
-            <div className="btn">
+            <div className={s.btn}>
+                <MyButton onClick={()=> props.remove(props.post)}>Open</MyButton>
                 <MyButton onClick={()=> props.remove(props.post)}>Delete</MyButton>
             </div>
         </div>
