@@ -50,9 +50,9 @@ function App() {
                 filter={filter}
                 setFilter={setFilter}
             />
-            {/*{postError &&*/}
-            {/*    <h1>error ${postError}</h1>*/}
-            {/*}*/}
+            {postError &&
+                <h1>error ${postError}</h1>
+            }
             {isPostsLoading
                 ? <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
                     <Loader/>
@@ -60,7 +60,7 @@ function App() {
                 : <PostList
                     remove={removePost}
                     posts={sortedAndSearchedPosts}
-                    title={"post list number 1"}
+                    title={"post about js"}
                 />
             }
         </div>
