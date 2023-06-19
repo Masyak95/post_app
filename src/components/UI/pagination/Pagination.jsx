@@ -3,7 +3,7 @@ import usePagination from "../../../hooks/usePagination";
 
 const Pagination = ({totalPages, page, changePage}) => {
 
-    const pagesArray = usePagination(totalPages); // Используем кастомный хук usePagination
+    const pagesArray = usePagination(totalPages);
 
     return (
         <div className={"page__wrapper"}>
