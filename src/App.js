@@ -11,6 +11,7 @@ import Loader from "./components/UI/loader/Loader";
 import {useFetching} from "./hooks/useFetching";
 import {getPageCount} from "./utils/pages";
 import usePagination from "./hooks/usePagination";
+import Pagination from "./components/UI/pagination/Pagination";
 
 
 function App() {
@@ -22,9 +23,8 @@ function App() {
     const [page, setPage] = useState(1);
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
-    const pagesArray = usePagination(totalPages); // Используем кастомный хук usePagination
 
-    const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async (limit, page) => {
         const response = await PostService.getAll(limit, page);
         setPosts(response.data);
         const totalCount = response.headers["x-total-count"];
@@ -32,7 +32,7 @@ function App() {
     });
 
     useEffect(() => {
-        fetchPosts();
+        fetchPosts(limit, page);
     }, []);
 
     const createPost = (newPost) => {
@@ -43,6 +43,11 @@ function App() {
     const removePost = (post) => {
         setPosts(posts.filter((p) => p.id !== post.id));
     };
+
+    const changePage = (page) => {
+        setPage(page)
+        fetchPosts(limit, page)
+    }
 
     return (
         <div className="App">
@@ -55,7 +60,7 @@ function App() {
 
             <hr style={{margin: "15px 0"}}/>
             <PostFilter filter={filter} setFilter={setFilter}/>
-            {postError && <h1>error ${postError}</h1>}
+            {postError && <h1>error {postError}</h1>}
             {isPostsLoading ? (
                 <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
                     <Loader/>
@@ -63,18 +68,11 @@ function App() {
             ) : (
                 <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"post about js"}/>
             )}
-            <div className={"page__wrapper"}>
-                {pagesArray.map((p) => (
-                    <span
-                        onClick={()=> setPage(p)}
-                        className={page === p ? "page page__current" : "page"}
-                        key={p}
-                    >
-                        {p}
-                    </span>
-                ))}
-            </div>
-
+            <Pagination
+                page={page}
+                changePage={changePage}
+                totalPages={totalPages}
+            />
         </div>
     );
 }
