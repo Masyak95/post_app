@@ -1,4 +1,3 @@
-
 import {useEffect, useState} from "react";
 import {usePosts} from "../hooks/usePosts";
 import {useFetching} from "../hooks/useFetching";
@@ -11,6 +10,7 @@ import PostFilter from "../components/PostFilter/PostFilter";
 import Loader from "../components/UI/loader/Loader";
 import PostList from "../components/PostList/PostList";
 import Pagination from "../components/UI/pagination/Pagination";
+import {Outlet} from "react-router-dom";
 
 
 
@@ -73,6 +73,7 @@ function Posts() {
                 changePage={changePage}
                 totalPages={totalPages}
             />
+        <Outlet/>
         </div>
     );
 }

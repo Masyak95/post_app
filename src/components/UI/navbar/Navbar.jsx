@@ -1,12 +1,25 @@
-import React from 'react';
-import s from "./Navbar.module.css"
+import React, { useContext } from 'react';
+import s from './Navbar.module.css';
+import MyButton from '../button/MyButton';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../context';
 
 const Navbar = () => {
+    const { isAuth, setIsAuth } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const logout = () => {
+        setIsAuth(false);
+        localStorage.removeItem('auth');
+        navigate('/login');
+    };
+
     return (
         <div className={s.navbar}>
+            <MyButton onClick={logout}>Log out</MyButton>
             <div className={s.link}>
-                <a href="/about"> About web</a>
-                <a href="/posts"> Posts</a>
+                <Link to="/about">About</Link>
+                <Link to="/posts">Posts</Link>
             </div>
         </div>
     );
