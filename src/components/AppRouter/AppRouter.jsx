@@ -1,19 +1,31 @@
-
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { routes } from "../../router";
+import { publicRoutes, privateRoutes } from "../../router";
 
 const AppRouter = () => {
+
+    const isAuth = false;
+
     return (
-        <Routes>
-            {routes.map((route) => (
-                <Route
-                    path={route.path}
-                    element={<route.component />}
-                    key={route.path}
-                />
-            ))}
-        </Routes>
+        isAuth
+            ?<Routes>
+                {privateRoutes.map((route) => (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        element={<route.component />}
+                    />
+                ))}
+            </Routes>
+            :<Routes>
+                {publicRoutes.map((route) => (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        element={<route.component />}
+                    />
+                ))}
+            </Routes>
     );
 };
 
